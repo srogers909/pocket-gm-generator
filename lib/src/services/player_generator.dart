@@ -1,6 +1,7 @@
 import 'dart:math';
 import '../models/player.dart';
 import '../models/positions.dart';
+import '../models/team_tier.dart';
 import '../data/names.dart';
 import '../data/schools.dart';
 import '../data/locations.dart';
@@ -11,7 +12,8 @@ class PlayerGenerator {
 
   /// Generates a single player with realistic attributes
   /// [currentYear] - Optional current year override (defaults to device's current year)
-  Player generatePlayer({int? currentYear}) {
+  /// [tier] - Optional team tier to adjust player quality
+  Player generatePlayer({int? currentYear, TeamTier? tier}) {
     // Determine nationality (95% USA, 2% Canada, 3% International)
     final nationality = _generateNationality();
     
@@ -33,13 +35,13 @@ class PlayerGenerator {
     final birthInfo = _generateBirthInfo(nationality, birthYear, year);
 
     // Generate ratings
-    final positionRating1 = _generateRating();
-    final positionRating2 = _generateRating();
-    final positionRating3 = _generateRating();
+    final positionRating1 = _generateRating(tier: tier);
+    final positionRating2 = _generateRating(tier: tier);
+    final positionRating3 = _generateRating(tier: tier);
     final overallRating = _calculateOverallRating(positionRating1, positionRating2, positionRating3);
-    final potentialRating = _generateRating();
-    final durabilityRating = _generateRating();
-    final footballIqRating = _generateFootballIq(position);
+    final potentialRating = _generateRating(tier: tier);
+    final durabilityRating = _generateRating(tier: tier);
+    final footballIqRating = _generateFootballIq(position, tier: tier);
     final fanPopularity = 0; // New players start with no fan popularity
 
     return Player(
@@ -347,27 +349,32 @@ class PlayerGenerator {
     return '$formattedDate ($age yrs) - $location $flag';
   }
 
-  /// Generates a rating value using bell curve distribution centered at 70
+  /// Generates a rating value using bell curve distribution
   /// Uses Box-Muller transform to approximate normal distribution
-  int _generateRating() {
-    // Generate normal distribution with mean=70, std dev=8
-    // This makes 70 common, with higher ratings exponentially rarer
+  /// [tier] - Optional team tier to adjust rating distribution
+  int _generateRating({TeamTier? tier}) {
+    // Use tier-specific mean and standard deviation, or default to average
+    final teamTier = tier ?? TeamTier.average;
+    final mean = teamTier.meanRating;
+    final stdDev = teamTier.standardDeviation;
+    
     double u1 = _random.nextDouble();
     double u2 = _random.nextDouble();
     
     // Box-Muller transform for normal distribution
     double z0 = sqrt(-2.0 * log(u1)) * cos(2.0 * pi * u2);
     
-    // Scale and shift: mean=70, standard deviation=8
-    double normalValue = 70 + (z0 * 8);
+    // Scale and shift using tier-specific parameters
+    double normalValue = mean + (z0 * stdDev);
     
     // Clamp to valid range and round to integer
     return normalValue.clamp(55, 110).round();
   }
 
   /// Generates Football IQ with potential boost for QBs and Safeties
-  int _generateFootballIq(String position) {
-    final baseRating = _generateRating();
+  /// [tier] - Optional team tier to adjust rating distribution
+  int _generateFootballIq(String position, {TeamTier? tier}) {
+    final baseRating = _generateRating(tier: tier);
     
     // QBs and Safeties get a slight boost to Football IQ
     if (hasFootballIqBoost(position)) {

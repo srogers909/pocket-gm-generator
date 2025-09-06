@@ -1,6 +1,7 @@
 import 'dart:math';
 import '../models/team.dart';
 import '../models/player.dart';
+import '../models/team_tier.dart';
 import '../data/cities.dart';
 import '../data/team_names.dart';
 import 'player_generator.dart';
@@ -59,7 +60,8 @@ class TeamGenerator {
   };
 
   /// Generates a complete football team with a 53-man roster
-  Team generateTeam() {
+  /// [tier] - Optional team tier to determine player quality distribution
+  Team generateTeam({TeamTier? tier}) {
     // Generate team identity
     final city = nflCities[_random.nextInt(nflCities.length)];
     final teamName = teamNames[_random.nextInt(teamNames.length)];
@@ -75,8 +77,8 @@ class TeamGenerator {
       secondaryColor = teamColors[_random.nextInt(teamColors.length)];
     } while (secondaryColor == primaryColor);
 
-    // Generate roster
-    final roster = _generateRoster();
+    // Generate roster with tier-based player quality
+    final roster = _generateRoster(tier: tier);
 
     return Team(
       name: fullName,
@@ -111,13 +113,14 @@ class TeamGenerator {
   }
 
   /// Generates a complete 53-man roster
-  List<Player> _generateRoster() {
+  /// [tier] - Optional team tier to determine player quality distribution
+  List<Player> _generateRoster({TeamTier? tier}) {
     final roster = <Player>[];
     
     // Generate players for each position according to roster composition
     rosterComposition.forEach((position, count) {
       for (int i = 0; i < count; i++) {
-        final player = _generatePlayerForPosition(position);
+        final player = _generatePlayerForPosition(position, tier: tier);
         roster.add(player);
       }
     });
@@ -129,19 +132,22 @@ class TeamGenerator {
   }
 
   /// Generates a player for a specific position
-  Player _generatePlayerForPosition(String position) {
+  /// [tier] - Optional team tier to determine player quality distribution
+  Player _generatePlayerForPosition(String position, {TeamTier? tier}) {
     Player player;
     
     // Keep generating until we get a player with the desired position
     do {
-      player = _playerGenerator.generatePlayer();
+      player = _playerGenerator.generatePlayer(tier: tier);
     } while (player.primaryPosition != position);
     
     return player;
   }
 
-  /// Generates multiple teams for a league
-  List<Team> generateLeague(int numberOfTeams) {
+  /// Generates multiple teams for a league with varied team tiers
+  /// [numberOfTeams] - Number of teams to generate
+  /// [distributeTiers] - Whether to distribute teams across different tiers (default: true)
+  List<Team> generateLeague(int numberOfTeams, {bool distributeTiers = true}) {
     final teams = <Team>[];
     final usedCombinations = <String>{};
     
@@ -149,9 +155,15 @@ class TeamGenerator {
       Team team;
       String combination;
       
+      // Determine team tier for variation
+      TeamTier? tier;
+      if (distributeTiers) {
+        tier = _assignRandomTier();
+      }
+      
       // Ensure unique team names within the league
       do {
-        team = generateTeam();
+        team = generateTeam(tier: tier);
         combination = team.name;
       } while (usedCombinations.contains(combination) && usedCombinations.length < (nflCities.length * teamNames.length));
       
@@ -160,6 +172,23 @@ class TeamGenerator {
     }
     
     return teams;
+  }
+
+  /// Assigns a random team tier with realistic distribution
+  TeamTier _assignRandomTier() {
+    final roll = _random.nextInt(100);
+    
+    // Realistic distribution:
+    // 10% Super Bowl Contenders
+    // 25% Playoff Teams  
+    // 30% Average Teams
+    // 25% Rebuilding Teams
+    // 10% Bad Teams
+    if (roll < 10) return TeamTier.superBowlContender;
+    if (roll < 35) return TeamTier.playoffTeam;
+    if (roll < 65) return TeamTier.average;
+    if (roll < 90) return TeamTier.rebuilding;
+    return TeamTier.bad;
   }
 
   /// Generates a team with veteran players (for rebuilding/established teams)
