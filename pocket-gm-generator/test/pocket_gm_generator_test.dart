@@ -204,4 +204,284 @@ void main() {
       }
     });
   });
+
+  group('Position-Specific Physical Attributes Tests', () {
+    late PlayerGenerator generator;
+
+    setUp(() {
+      generator = PlayerGenerator();
+    });
+
+    test('Offensive Line players have appropriate height and weight ranges', () {
+      const sampleSize = 100;
+      final heights = <int>[];
+      final weights = <int>[];
+      
+      // Generate OL players by filtering generated players
+      int attempts = 0;
+      while (heights.length < sampleSize && attempts < sampleSize * 10) {
+        final player = generator.generatePlayer();
+        if (player.primaryPosition == 'OL') {
+          heights.add(player.heightInches);
+          weights.add(player.weightLbs);
+        }
+        attempts++;
+      }
+      
+      if (heights.isNotEmpty) {
+        // OL Height: 75-80 inches (6'3" - 6'8")
+        expect(heights.every((h) => h >= 75 && h <= 80), isTrue);
+        
+        // OL Weight: should average around 315 lbs (280-360 range)
+        final avgWeight = weights.reduce((a, b) => a + b) / weights.length;
+        expect(avgWeight, allOf(greaterThan(300.0), lessThan(330.0)));
+        expect(weights.every((w) => w >= 280 && w <= 360), isTrue);
+      }
+    });
+
+    test('Defensive Line players have appropriate height and weight ranges', () {
+      const sampleSize = 100;
+      final heights = <int>[];
+      final weights = <int>[];
+      
+      int attempts = 0;
+      while (heights.length < sampleSize && attempts < sampleSize * 10) {
+        final player = generator.generatePlayer();
+        if (player.primaryPosition == 'DL') {
+          heights.add(player.heightInches);
+          weights.add(player.weightLbs);
+        }
+        attempts++;
+      }
+      
+      if (heights.isNotEmpty) {
+        // DL Height: 74-80 inches (6'2" - 6'8")
+        expect(heights.every((h) => h >= 74 && h <= 80), isTrue);
+        
+        // DL Weight: should average around 290 lbs (220-350 range)
+        final avgWeight = weights.reduce((a, b) => a + b) / weights.length;
+        expect(avgWeight, allOf(greaterThan(270.0), lessThan(310.0)));
+        expect(weights.every((w) => w >= 220 && w <= 350), isTrue);
+      }
+    });
+
+    test('Cornerback players have appropriate height and weight ranges', () {
+      const sampleSize = 100;
+      final heights = <int>[];
+      final weights = <int>[];
+      
+      int attempts = 0;
+      while (heights.length < sampleSize && attempts < sampleSize * 10) {
+        final player = generator.generatePlayer();
+        if (player.primaryPosition == 'CB') {
+          heights.add(player.heightInches);
+          weights.add(player.weightLbs);
+        }
+        attempts++;
+      }
+      
+      if (heights.isNotEmpty) {
+        // CB Height: 69-74 inches (5'9" - 6'2")
+        expect(heights.every((h) => h >= 69 && h <= 74), isTrue);
+        
+        // CB Weight: should average around 195 lbs (165-230 range)
+        final avgWeight = weights.reduce((a, b) => a + b) / weights.length;
+        expect(avgWeight, allOf(greaterThan(185.0), lessThan(210.0)));
+        expect(weights.every((w) => w >= 165 && w <= 230), isTrue);
+      }
+    });
+
+    test('Running Back players have appropriate height and weight ranges', () {
+      const sampleSize = 100;
+      final heights = <int>[];
+      final weights = <int>[];
+      
+      int attempts = 0;
+      while (heights.length < sampleSize && attempts < sampleSize * 10) {
+        final player = generator.generatePlayer();
+        if (player.primaryPosition == 'RB') {
+          heights.add(player.heightInches);
+          weights.add(player.weightLbs);
+        }
+        attempts++;
+      }
+      
+      if (heights.isNotEmpty) {
+        // RB Height: 68-74 inches (5'8" - 6'2")
+        expect(heights.every((h) => h >= 68 && h <= 74), isTrue);
+        
+        // RB Weight: should average around 210 lbs (180-240 range)
+        final avgWeight = weights.reduce((a, b) => a + b) / weights.length;
+        expect(avgWeight, allOf(greaterThan(200.0), lessThan(220.0)));
+        expect(weights.every((w) => w >= 180 && w <= 240), isTrue);
+      }
+    });
+
+    test('Quarterback players have appropriate height and weight ranges', () {
+      const sampleSize = 100;
+      final heights = <int>[];
+      final weights = <int>[];
+      
+      int attempts = 0;
+      while (heights.length < sampleSize && attempts < sampleSize * 10) {
+        final player = generator.generatePlayer();
+        if (player.primaryPosition == 'QB') {
+          heights.add(player.heightInches);
+          weights.add(player.weightLbs);
+        }
+        attempts++;
+      }
+      
+      if (heights.isNotEmpty) {
+        // QB Height: 72-78 inches (6'0" - 6'6")
+        expect(heights.every((h) => h >= 72 && h <= 78), isTrue);
+        
+        // QB Weight: should average around 215 lbs (185-255 range)
+        final avgWeight = weights.reduce((a, b) => a + b) / weights.length;
+        expect(avgWeight, allOf(greaterThan(205.0), lessThan(230.0)));
+        expect(weights.every((w) => w >= 185 && w <= 255), isTrue);
+      }
+    });
+
+    test('Position weight distributions follow normal curves with correct means', () {
+      const sampleSize = 50;
+      final positionWeights = <String, List<int>>{};
+      
+      // Collect weights for each position
+      int attempts = 0;
+      while (attempts < sampleSize * 20) {
+        final player = generator.generatePlayer();
+        positionWeights.putIfAbsent(player.primaryPosition, () => <int>[]);
+        if (positionWeights[player.primaryPosition]!.length < sampleSize) {
+          positionWeights[player.primaryPosition]!.add(player.weightLbs);
+        }
+        attempts++;
+      }
+      
+      // Expected weight means for each position
+      final expectedMeans = {
+        'OL': 315.0,
+        'DL': 290.0,
+        'TE': 255.0,
+        'LB': 245.0,
+        'QB': 215.0,
+        'RB': 210.0,
+        'S': 205.0,
+        'WR': 200.0,
+        'CB': 195.0,
+        'K': 185.0,
+      };
+      
+      // Verify each position has weights close to expected mean
+      for (final entry in positionWeights.entries) {
+        final position = entry.key;
+        final weights = entry.value;
+        
+        if (weights.length >= 10 && expectedMeans.containsKey(position)) {
+          final avgWeight = weights.reduce((a, b) => a + b) / weights.length;
+          final expectedMean = expectedMeans[position]!;
+          
+          // Average should be within ±15 lbs of expected mean
+          expect(avgWeight, 
+            allOf(
+              greaterThan(expectedMean - 15), 
+              lessThan(expectedMean + 15)
+            ),
+            reason: '$position players should average around ${expectedMean} lbs, but averaged $avgWeight lbs'
+          );
+        }
+      }
+    });
+
+    test('Offensive Line players are consistently heavier than skill position players', () {
+      const sampleSize = 50;
+      final olWeights = <int>[];
+      final skillWeights = <int>[]; // RB, WR, CB
+      
+      int attempts = 0;
+      while ((olWeights.length < sampleSize || skillWeights.length < sampleSize) && attempts < sampleSize * 20) {
+        final player = generator.generatePlayer();
+        if (player.primaryPosition == 'OL' && olWeights.length < sampleSize) {
+          olWeights.add(player.weightLbs);
+        } else if (['RB', 'WR', 'CB'].contains(player.primaryPosition) && skillWeights.length < sampleSize) {
+          skillWeights.add(player.weightLbs);
+        }
+        attempts++;
+      }
+      
+      if (olWeights.isNotEmpty && skillWeights.isNotEmpty) {
+        final avgOLWeight = olWeights.reduce((a, b) => a + b) / olWeights.length;
+        final avgSkillWeight = skillWeights.reduce((a, b) => a + b) / skillWeights.length;
+        
+        // OL players should be significantly heavier than skill position players
+        expect(avgOLWeight, greaterThan(avgSkillWeight + 80));
+      }
+    });
+  });
+
+  group('Bell Curve Distribution Tests', () {
+    late PlayerGenerator generator;
+
+    setUp(() {
+      generator = PlayerGenerator();
+    });
+
+    test('Rating distribution follows bell curve centered at 70', () {
+      const sampleSize = 1000;
+      final ratings = <int>[];
+      
+      // Generate a large sample of ratings
+      for (int i = 0; i < sampleSize; i++) {
+        final player = generator.generatePlayer();
+        ratings.add(player.positionRating1);
+        ratings.add(player.positionRating2);
+        ratings.add(player.positionRating3);
+      }
+      
+      // Calculate average rating
+      final average = ratings.reduce((a, b) => a + b) / ratings.length;
+      
+      // Average should be close to 70 (within ±3 points due to randomness)
+      expect(average, allOf(greaterThan(67.0), lessThan(73.0)));
+      
+      // Count ratings in different ranges
+      final below60 = ratings.where((r) => r < 60).length;
+      final range60to79 = ratings.where((r) => r >= 60 && r < 80).length;
+      final range80to89 = ratings.where((r) => r >= 80 && r < 90).length;
+      final above90 = ratings.where((r) => r >= 90).length;
+      
+      // Most ratings should be in the 60-79 range (bell curve center)
+      expect(range60to79, greaterThan(ratings.length * 0.5));
+      
+      // Higher ratings should be rarer
+      expect(range80to89, lessThan(range60to79));
+      expect(above90, lessThan(range80to89));
+      
+      // Elite ratings (90+) should be very rare (less than 5% of total)
+      expect(above90, lessThan(ratings.length * 0.05));
+    });
+
+    test('Overall ratings reflect bell curve distribution', () {
+      const sampleSize = 500;
+      final overallRatings = <int>[];
+      
+      // Generate players and collect overall ratings
+      for (int i = 0; i < sampleSize; i++) {
+        final player = generator.generatePlayer();
+        overallRatings.add(player.overallRating);
+      }
+      
+      // Calculate average overall rating
+      final average = overallRatings.reduce((a, b) => a + b) / overallRatings.length;
+      
+      // Average should be close to 70 (within ±3 points)
+      expect(average, allOf(greaterThan(67.0), lessThan(73.0)));
+      
+      // Count elite players (overall 85+)
+      final elitePlayers = overallRatings.where((r) => r >= 85).length;
+      
+      // Elite players should be rare (less than 10% of total)
+      expect(elitePlayers, lessThan(overallRatings.length * 0.1));
+    });
+  });
 }

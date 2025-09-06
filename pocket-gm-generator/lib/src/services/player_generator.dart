@@ -27,8 +27,8 @@ class PlayerGenerator {
     
     // Generate other attributes
     final position = footballPositions[_random.nextInt(footballPositions.length)];
-    final height = _generateHeight();
-    final weight = _generateWeight(height);
+    final height = _generateHeight(position);
+    final weight = _generateWeight(position);
     final college = _generateCollegeInfo(year);
     final birthInfo = _generateBirthInfo(nationality, birthYear, year);
 
@@ -83,8 +83,8 @@ class PlayerGenerator {
     
     // Generate other attributes
     final position = footballPositions[_random.nextInt(footballPositions.length)];
-    final height = _generateHeight();
-    final weight = _generateWeight(height);
+    final height = _generateHeight(position);
+    final weight = _generateWeight(position);
     final college = _generateVeteranCollegeInfo(playerAge, year);
     final birthInfo = _generateBirthInfo(nationality, birthYear, year);
 
@@ -171,16 +171,118 @@ class PlayerGenerator {
     };
   }
 
-  /// Generates realistic height for football players (66-78 inches)
-  int _generateHeight() {
-    return 66 + _random.nextInt(13); // 5'6" to 6'6"
+  /// Generates realistic height for football players based on position
+  int _generateHeight(String position) {
+    switch (position) {
+      case 'OL': // Offensive Line - tallest players
+        return 75 + _random.nextInt(6); // 6'3" to 6'8"
+      case 'TE': // Tight End - tall and athletic
+        return 75 + _random.nextInt(5); // 6'3" to 6'7"
+      case 'DL': // Defensive Line - tall and powerful
+        return 74 + _random.nextInt(7); // 6'2" to 6'8"
+      case 'QB': // Quarterback - above average height
+        return 72 + _random.nextInt(7); // 6'0" to 6'6"
+      case 'LB': // Linebacker - athletic height
+        return 72 + _random.nextInt(6); // 6'0" to 6'5"
+      case 'WR': // Wide Receiver - varied heights
+        return 70 + _random.nextInt(8); // 5'10" to 6'5"
+      case 'S': // Safety - medium height
+        return 70 + _random.nextInt(7); // 5'10" to 6'4"
+      case 'K': // Kicker - average height
+        return 70 + _random.nextInt(7); // 5'10" to 6'4"
+      case 'CB': // Cornerback - shorter and agile
+        return 69 + _random.nextInt(6); // 5'9" to 6'2"
+      case 'RB': // Running Back - compact and low
+        return 68 + _random.nextInt(7); // 5'8" to 6'2"
+      default:
+        return 70 + _random.nextInt(8); // Default fallback
+    }
   }
 
-  /// Generates realistic weight based on height and position
-  int _generateWeight(int height) {
-    final baseWeight = 140 + (height - 66) * 8; // Base weight calculation
-    final variation = _random.nextInt(40) - 20; // ±20 lbs variation
-    return baseWeight + variation;
+  /// Generates realistic weight based on position using normal distribution
+  int _generateWeight(String position) {
+    double mean;
+    double stdDev;
+    int minWeight;
+    int maxWeight;
+    
+    switch (position) {
+      case 'OL': // Offensive Line - heaviest players
+        mean = 315.0;
+        stdDev = 15.0;
+        minWeight = 280;
+        maxWeight = 360;
+        break;
+      case 'DL': // Defensive Line - very heavy
+        mean = 290.0;
+        stdDev = 20.0;
+        minWeight = 220;
+        maxWeight = 350;
+        break;
+      case 'TE': // Tight End - large and athletic
+        mean = 255.0;
+        stdDev = 10.0;
+        minWeight = 230;
+        maxWeight = 280;
+        break;
+      case 'LB': // Linebacker - medium-heavy
+        mean = 245.0;
+        stdDev = 15.0;
+        minWeight = 220;
+        maxWeight = 270;
+        break;
+      case 'QB': // Quarterback - medium build
+        mean = 215.0;
+        stdDev = 10.0;
+        minWeight = 185;
+        maxWeight = 255;
+        break;
+      case 'RB': // Running Back - compact and powerful
+        mean = 210.0;
+        stdDev = 10.0;
+        minWeight = 180;
+        maxWeight = 240;
+        break;
+      case 'S': // Safety - medium build
+        mean = 205.0;
+        stdDev = 10.0;
+        minWeight = 175;
+        maxWeight = 235;
+        break;
+      case 'WR': // Wide Receiver - lean and fast
+        mean = 200.0;
+        stdDev = 10.0;
+        minWeight = 170;
+        maxWeight = 230;
+        break;
+      case 'CB': // Cornerback - lightest defenders
+        mean = 195.0;
+        stdDev = 10.0;
+        minWeight = 165;
+        maxWeight = 230;
+        break;
+      case 'K': // Kicker - lighter build
+        mean = 185.0;
+        stdDev = 10.0;
+        minWeight = 160;
+        maxWeight = 220;
+        break;
+      default:
+        mean = 210.0;
+        stdDev = 15.0;
+        minWeight = 160;
+        maxWeight = 280;
+    }
+    
+    // Generate normal distribution using Box-Muller transform
+    double u1 = _random.nextDouble();
+    double u2 = _random.nextDouble();
+    
+    double z0 = sqrt(-2.0 * log(u1)) * cos(2.0 * pi * u2);
+    double normalValue = mean + (z0 * stdDev);
+    
+    // Clamp to position-specific range and round to integer
+    return normalValue.clamp(minWeight, maxWeight).round();
   }
 
   /// Generates college information for 2025 draft rookies
@@ -245,9 +347,22 @@ class PlayerGenerator {
     return '$formattedDate ($age yrs) - $location $flag';
   }
 
-  /// Generates a rating value between 55-110
+  /// Generates a rating value using bell curve distribution centered at 70
+  /// Uses Box-Muller transform to approximate normal distribution
   int _generateRating() {
-    return 55 + _random.nextInt(56); // 55-110 range
+    // Generate normal distribution with mean=70, std dev=8
+    // This makes 70 common, with higher ratings exponentially rarer
+    double u1 = _random.nextDouble();
+    double u2 = _random.nextDouble();
+    
+    // Box-Muller transform for normal distribution
+    double z0 = sqrt(-2.0 * log(u1)) * cos(2.0 * pi * u2);
+    
+    // Scale and shift: mean=70, standard deviation=8
+    double normalValue = 70 + (z0 * 8);
+    
+    // Clamp to valid range and round to integer
+    return normalValue.clamp(55, 110).round();
   }
 
   /// Generates Football IQ with potential boost for QBs and Safeties

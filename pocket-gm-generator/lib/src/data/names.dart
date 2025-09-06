@@ -52,11 +52,18 @@ const List<String> internationalLastNames = [
   'Rossi', 'Ferrari', 'Müller', 'Schmidt', 'Dupont', 'Martin', 'Hassan'
 ];
 
-/// Football positions
+/// Football positions - simplified to 10 main categories
 const List<String> footballPositions = [
-  'QB', 'RB', 'FB', 'WR', 'TE', 'OL', 'C', 'OG', 'OT',
-  'DL', 'DE', 'DT', 'NT', 'LB', 'ILB', 'OLB', 'MLB',
-  'CB', 'S', 'FS', 'SS', 'K', 'P', 'LS'
+  'QB',  // Quarterback
+  'RB',  // Running Back (includes FB)
+  'WR',  // Wide Receiver
+  'OL',  // Offensive Line (includes C, OG, OT, G, T)
+  'K',   // Kicker (includes P and LS)
+  'S',   // Safety (includes FS, SS)
+  'CB',  // Cornerback
+  'DL',  // Defensive Line (includes DE, DT, NT)
+  'LB',  // Linebacker (includes ILB, OLB, MLB)
+  'TE'   // Tight End
 ];
 
 /// Fan nicknames

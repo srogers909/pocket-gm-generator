@@ -150,11 +150,11 @@ const Map<String, PositionAttributes> positionAttributeMap = {
     attribute3: 'Speed',
   ),
   
-  // Kicker
+  // Kicker (includes Punter and Long Snapper)
   'K': PositionAttributes(
-    attribute1: 'Kick Power',
-    attribute2: 'Kick Accuracy',
-    attribute3: 'Pressure Resistance',
+    attribute1: 'Leg Strength',
+    attribute2: 'Accuracy',
+    attribute3: 'Consistency',
   ),
   
   // Punter
