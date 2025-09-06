@@ -1,0 +1,18 @@
+/// Support for generating realistic football players, teams, and game data.
+///
+/// This library provides tools for creating authentic-sounding players with
+/// realistic attributes, names, and backgrounds, as well as complete teams
+/// with proper roster composition for football simulation games.
+library;
+
+export 'src/models/player.dart';
+export 'src/models/team.dart';
+export 'src/services/player_generator.dart';
+export 'src/services/team_generator.dart';
+
+// Data exports (optional, for advanced usage)
+export 'src/data/names.dart';
+export 'src/data/schools.dart';
+export 'src/data/locations.dart';
+export 'src/data/cities.dart';
+export 'src/data/team_names.dart';
