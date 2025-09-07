@@ -7,8 +7,13 @@ library;
 
 export 'src/models/player.dart';
 export 'src/models/team.dart';
+export 'src/models/team_tier.dart';
+export 'src/models/division.dart';
+export 'src/models/conference.dart';
+export 'src/models/league.dart';
 export 'src/services/player_generator.dart';
 export 'src/services/team_generator.dart';
+export 'src/services/league_generator.dart';
 
 // Data exports (optional, for advanced usage)
 export 'src/data/names.dart';
@@ -16,3 +21,4 @@ export 'src/data/schools.dart';
 export 'src/data/locations.dart';
 export 'src/data/cities.dart';
 export 'src/data/team_names.dart';
+export 'src/data/nfl_structure.dart';

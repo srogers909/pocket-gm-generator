@@ -7,6 +7,9 @@ class Team {
   final String primaryColor;
   final String secondaryColor;
   final List<Player> roster;
+  final String? conference;
+  final String? division;
+  final String? city;
 
   Team({
     required this.name,
@@ -14,6 +17,9 @@ class Team {
     required this.primaryColor,
     required this.secondaryColor,
     required this.roster,
+    this.conference,
+    this.division,
+    this.city,
   });
 
   /// Gets players by position
