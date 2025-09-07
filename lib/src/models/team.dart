@@ -59,6 +59,19 @@ class Team {
     return totalRating / roster.length;
   }
 
+  /// Gets the calculated tier based on the team's actual average rating
+  TeamTier get calculatedTier {
+    final rating = averageOverallRating;
+    if (rating >= 85.0) return TeamTier.superBowlContender;
+    if (rating >= 80.0) return TeamTier.playoffTeam;
+    if (rating >= 76.0) return TeamTier.average;
+    if (rating >= 71.0) return TeamTier.rebuilding;
+    return TeamTier.bad;
+  }
+
+  /// Gets the tier to display (uses calculated tier if no tier was assigned)
+  TeamTier get displayTier => tier ?? calculatedTier;
+
   /// Gets roster breakdown by position
   Map<String, int> get rosterBreakdown {
     final breakdown = <String, int>{};
