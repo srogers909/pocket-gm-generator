@@ -3,13 +3,13 @@
 
 /// NFL Division structure with city assignments
 const Map<String, Map<String, List<String>>> nflStructure = {
-  'AFC': {
+  'LFC': {
     'East': ['Buffalo', 'Miami', 'New England', 'New York'],
     'North': ['Baltimore', 'Cincinnati', 'Cleveland', 'Pittsburgh'],
     'South': ['Houston', 'Indianapolis', 'Jacksonville', 'Tennessee'],
     'West': ['Denver', 'Kansas City', 'Las Vegas', 'Los Angeles'],
   },
-  'NFC': {
+  'FFC': {
     'East': ['Dallas', 'New York', 'Philadelphia', 'Washington'],
     'North': ['Chicago', 'Detroit', 'Green Bay', 'Minnesota'],
     'South': ['Atlanta', 'Carolina', 'New Orleans', 'Tampa Bay'],
