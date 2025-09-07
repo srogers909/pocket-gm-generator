@@ -17,6 +17,18 @@ const Map<String, Map<String, List<String>>> nflStructure = {
   },
 };
 
+/// Conference full names and abbreviations
+const Map<String, Map<String, String>> conferenceInfo = {
+  'LFC': {
+    'fullName': 'Liberty Football Conference',
+    'abbreviation': 'LFC',
+  },
+  'FFC': {
+    'fullName': 'Fantasy Football Conference',
+    'abbreviation': 'FFC',
+  },
+};
+
 /// Gets all conference names
 List<String> get conferenceNames => nflStructure.keys.toList();
 
@@ -69,4 +81,14 @@ Map<String, String>? getConferenceAndDivision(String city) {
     }
   }
   return null;
+}
+
+/// Gets the full name of a conference by its abbreviation
+String getConferenceFullName(String abbreviation) {
+  return conferenceInfo[abbreviation]?['fullName'] ?? abbreviation;
+}
+
+/// Gets the abbreviation of a conference by its abbreviation key
+String getConferenceAbbreviation(String abbreviation) {
+  return conferenceInfo[abbreviation]?['abbreviation'] ?? abbreviation;
 }

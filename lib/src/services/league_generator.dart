@@ -61,7 +61,8 @@ class LeagueGenerator {
 
       // Create conference
       final conference = Conference(
-        name: conferenceName,
+        name: getConferenceFullName(conferenceName),
+        abbreviation: getConferenceAbbreviation(conferenceName),
         divisions: divisions,
       );
       conferences.add(conference);
@@ -206,6 +207,7 @@ class LeagueGenerator {
       
       final conference = Conference(
         name: 'Conference ${c + 1}',
+        abbreviation: 'C${c + 1}',
         divisions: divisions,
       );
       conferences.add(conference);

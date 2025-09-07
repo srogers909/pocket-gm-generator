@@ -4,10 +4,12 @@ import 'team.dart';
 /// Represents a conference in the league containing 4 divisions
 class Conference {
   final String name;
+  final String abbreviation;
   final List<Division> divisions;
 
   Conference({
     required this.name,
+    required this.abbreviation,
     required this.divisions,
   });
 
