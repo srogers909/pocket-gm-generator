@@ -1,4 +1,5 @@
 import 'player.dart';
+import 'team_tier.dart';
 
 /// Represents a football team with roster and attributes
 class Team {
@@ -10,6 +11,7 @@ class Team {
   final String? conference;
   final String? division;
   final String? city;
+  final TeamTier? tier;
 
   Team({
     required this.name,
@@ -20,6 +22,7 @@ class Team {
     this.conference,
     this.division,
     this.city,
+    this.tier,
   });
 
   /// Gets players by position

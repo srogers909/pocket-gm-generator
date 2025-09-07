@@ -122,6 +122,7 @@ class LeagueGenerator {
       conference: conference,
       division: division,
       city: city,
+      tier: tier,
     );
   }
 
