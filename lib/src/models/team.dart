@@ -1,5 +1,6 @@
 import 'player.dart';
 import 'staff.dart';
+import 'stadium.dart';
 import 'team_tier.dart';
 
 /// Represents a football team with roster and attributes
@@ -10,6 +11,8 @@ class Team {
   final String secondaryColor;
   final List<Player> roster;
   final TeamStaff? staff;
+  final Stadium stadium;
+  final int fanHappiness; // 50-100 scale
   final String? conference;
   final String? division;
   final String? city;
@@ -21,6 +24,8 @@ class Team {
     required this.primaryColor,
     required this.secondaryColor,
     required this.roster,
+    required this.stadium,
+    required this.fanHappiness,
     this.staff,
     this.conference,
     this.division,
@@ -113,6 +118,9 @@ class Team {
     final buffer = StringBuffer();
     buffer.writeln('=== $name ($abbreviation) ===');
     buffer.writeln('Colors: $primaryColor / $secondaryColor');
+    buffer.writeln('Stadium: ${stadium.name} (${stadium.location})');
+    buffer.writeln('Fan Happiness: $fanHappiness');
+    buffer.writeln('Team Morale: ${teamMorale.toStringAsFixed(1)}');
     buffer.writeln('Roster Size: $rosterSize players');
     buffer.writeln('Average Rating: ${averageOverallRating.toStringAsFixed(1)}');
     buffer.writeln('');

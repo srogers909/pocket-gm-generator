@@ -6,12 +6,14 @@ import '../data/cities.dart';
 import '../data/team_names.dart';
 import 'player_generator.dart';
 import 'staff_generator.dart';
+import 'stadium_generator.dart';
 
 /// Service for generating realistic football teams
 class TeamGenerator {
   final Random _random = Random();
   final PlayerGenerator _playerGenerator = PlayerGenerator();
   final StaffGenerator _staffGenerator = StaffGenerator();
+  final StadiumGenerator _stadiumGenerator = StadiumGenerator();
 
   /// List of common team colors
   static const List<String> teamColors = [
@@ -84,6 +86,13 @@ class TeamGenerator {
     
     // Generate staff with tier-based quality
     final staff = _staffGenerator.generateTeamStaff(tier ?? TeamTier.average);
+    
+    // Generate stadium
+    final stadium = _stadiumGenerator.generateStadium();
+    
+    // Calculate fan happiness based on team's overall rating
+    final teamRating = roster.fold<int>(0, (sum, player) => sum + player.overallRating) / roster.length;
+    final fanHappiness = _generateFanHappiness(teamRating);
 
     return Team(
       name: fullName,
@@ -91,6 +100,8 @@ class TeamGenerator {
       primaryColor: primaryColor,
       secondaryColor: secondaryColor,
       roster: roster,
+      stadium: stadium,
+      fanHappiness: fanHappiness,
       staff: staff,
     );
   }
@@ -216,6 +227,13 @@ class TeamGenerator {
     
     // Generate average-tier staff for veteran teams
     final staff = _staffGenerator.generateTeamStaff(TeamTier.average);
+    
+    // Generate stadium
+    final stadium = _stadiumGenerator.generateStadium();
+    
+    // Calculate fan happiness based on team's overall rating
+    final teamRating = roster.fold<int>(0, (sum, player) => sum + player.overallRating) / roster.length;
+    final fanHappiness = _generateFanHappiness(teamRating);
 
     return Team(
       name: fullName,
@@ -223,6 +241,8 @@ class TeamGenerator {
       primaryColor: primaryColor,
       secondaryColor: secondaryColor,
       roster: roster,
+      stadium: stadium,
+      fanHappiness: fanHappiness,
       staff: staff,
     );
   }
@@ -252,5 +272,32 @@ class TeamGenerator {
     } while (player.primaryPosition != position);
     
     return player;
+  }
+
+  /// Generates fan happiness based on team's overall rating
+  /// Returns value between 50-100, heavily influenced by team rating
+  int _generateFanHappiness(double teamRating) {
+    // Base fan happiness on team rating with some randomization
+    int baseFanHappiness;
+    
+    if (teamRating >= 85.0) {
+      // Elite teams: 90-100 fan happiness
+      baseFanHappiness = 90 + _random.nextInt(11);
+    } else if (teamRating >= 80.0) {
+      // Strong teams: 80-95 fan happiness
+      baseFanHappiness = 80 + _random.nextInt(16);
+    } else if (teamRating >= 76.0) {
+      // Average teams: 70-85 fan happiness
+      baseFanHappiness = 70 + _random.nextInt(16);
+    } else if (teamRating >= 71.0) {
+      // Rebuilding teams: 60-75 fan happiness
+      baseFanHappiness = 60 + _random.nextInt(16);
+    } else {
+      // Poor teams: 50-65 fan happiness
+      baseFanHappiness = 50 + _random.nextInt(16);
+    }
+    
+    // Ensure it stays within 50-100 range
+    return max(50, min(100, baseFanHappiness));
   }
 }
