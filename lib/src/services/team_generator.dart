@@ -5,11 +5,13 @@ import '../models/team_tier.dart';
 import '../data/cities.dart';
 import '../data/team_names.dart';
 import 'player_generator.dart';
+import 'staff_generator.dart';
 
 /// Service for generating realistic football teams
 class TeamGenerator {
   final Random _random = Random();
   final PlayerGenerator _playerGenerator = PlayerGenerator();
+  final StaffGenerator _staffGenerator = StaffGenerator();
 
   /// List of common team colors
   static const List<String> teamColors = [
@@ -79,6 +81,9 @@ class TeamGenerator {
 
     // Generate roster with tier-based player quality
     final roster = _generateRoster(tier: tier);
+    
+    // Generate staff with tier-based quality
+    final staff = _staffGenerator.generateTeamStaff(tier ?? TeamTier.average);
 
     return Team(
       name: fullName,
@@ -86,6 +91,7 @@ class TeamGenerator {
       primaryColor: primaryColor,
       secondaryColor: secondaryColor,
       roster: roster,
+      staff: staff,
     );
   }
 
@@ -207,6 +213,9 @@ class TeamGenerator {
 
     // Generate veteran roster
     final roster = _generateVeteranRoster(averageAge: averageAge);
+    
+    // Generate average-tier staff for veteran teams
+    final staff = _staffGenerator.generateTeamStaff(TeamTier.average);
 
     return Team(
       name: fullName,
@@ -214,6 +223,7 @@ class TeamGenerator {
       primaryColor: primaryColor,
       secondaryColor: secondaryColor,
       roster: roster,
+      staff: staff,
     );
   }
 

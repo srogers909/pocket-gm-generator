@@ -43,6 +43,7 @@ class PlayerGenerator {
     final durabilityRating = _generateRating(tier: tier);
     final footballIqRating = _generateFootballIq(position, tier: tier);
     final fanPopularity = 0; // New players start with no fan popularity
+    final morale = _generateMorale(); // Generate high morale for new players
 
     return Player(
       fullName: names['full']!,
@@ -59,6 +60,7 @@ class PlayerGenerator {
       durabilityRating: durabilityRating,
       footballIqRating: footballIqRating,
       fanPopularity: fanPopularity,
+      morale: morale,
       positionRating1: positionRating1,
       positionRating2: positionRating2,
       positionRating3: positionRating3,
@@ -99,6 +101,7 @@ class PlayerGenerator {
     final durabilityRating = _generateRating();
     final footballIqRating = _generateFootballIq(position);
     final fanPopularity = 0; // New players start with no fan popularity
+    final morale = _generateMorale(); // Generate high morale for veteran players
 
     return Player(
       fullName: names['full']!,
@@ -115,6 +118,7 @@ class PlayerGenerator {
       durabilityRating: durabilityRating,
       footballIqRating: footballIqRating,
       fanPopularity: fanPopularity,
+      morale: morale,
       positionRating1: positionRating1,
       positionRating2: positionRating2,
       positionRating3: positionRating3,
@@ -367,8 +371,8 @@ class PlayerGenerator {
     // Scale and shift using tier-specific parameters
     double normalValue = mean + (z0 * stdDev);
     
-    // Clamp to valid range and round to integer
-    return normalValue.clamp(55, 110).round();
+    // Clamp to valid range and round up to integer
+    return normalValue.clamp(55, 110).ceil();
   }
 
   /// Generates Football IQ with potential boost for QBs and Safeties
@@ -385,8 +389,17 @@ class PlayerGenerator {
     return baseRating;
   }
 
+  /// Generates morale rating with high values (80-100, biased toward 100)
+  int _generateMorale() {
+    // Generate two random numbers between 80-100 and take the higher one
+    // This biases the distribution toward higher values
+    final morale1 = 80 + _random.nextInt(21); // 80-100
+    final morale2 = 80 + _random.nextInt(21); // 80-100
+    return morale1 > morale2 ? morale1 : morale2;
+  }
+
   /// Calculates overall rating as average of three position-specific ratings
   int _calculateOverallRating(int rating1, int rating2, int rating3) {
-    return ((rating1 + rating2 + rating3) / 3).round();
+    return ((rating1 + rating2 + rating3) / 3).ceil();
   }
 }

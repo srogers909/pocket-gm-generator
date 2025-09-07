@@ -1,4 +1,5 @@
 import 'player.dart';
+import 'staff.dart';
 import 'team_tier.dart';
 
 /// Represents a football team with roster and attributes
@@ -8,6 +9,7 @@ class Team {
   final String primaryColor;
   final String secondaryColor;
   final List<Player> roster;
+  final TeamStaff? staff;
   final String? conference;
   final String? division;
   final String? city;
@@ -19,6 +21,7 @@ class Team {
     required this.primaryColor,
     required this.secondaryColor,
     required this.roster,
+    this.staff,
     this.conference,
     this.division,
     this.city,
@@ -57,6 +60,30 @@ class Team {
     if (roster.isEmpty) return 0.0;
     final totalRating = roster.fold<int>(0, (sum, player) => sum + player.overallRating);
     return totalRating / roster.length;
+  }
+
+  /// Gets the team's average morale from all players and staff
+  double get teamMorale {
+    if (roster.isEmpty) return 80.0; // Default morale if no roster
+    
+    double totalMorale = 0.0;
+    int totalPeople = 0;
+    
+    // Add player morale
+    for (final player in roster) {
+      totalMorale += player.morale;
+      totalPeople++;
+    }
+    
+    // Add staff morale if staff exists
+    if (staff != null) {
+      for (final staffMember in staff!.allStaff) {
+        totalMorale += staffMember.morale;
+        totalPeople++;
+      }
+    }
+    
+    return totalPeople > 0 ? totalMorale / totalPeople : 80.0;
   }
 
   /// Gets the calculated tier based on the team's actual average rating

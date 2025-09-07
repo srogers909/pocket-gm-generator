@@ -44,6 +44,9 @@ class Player {
   /// Fan popularity rating (0-100)
   final int fanPopularity;
   
+  /// Player morale rating (50-100)
+  final int morale;
+  
   /// Position-specific rating 1 (0-100)
   final int positionRating1;
   
@@ -68,6 +71,7 @@ class Player {
     this.durabilityRating = 0,
     this.footballIqRating = 0,
     this.fanPopularity = 0,
+    this.morale = 80,
     this.positionRating1 = 0,
     this.positionRating2 = 0,
     this.positionRating3 = 0,
@@ -105,7 +109,7 @@ Height: $heightFormatted ($heightInches inches)
 Weight: $weightLbs lbs
 College: $college
 Born: $birthInfo
-Ratings: Overall($overallRating) Potential($potentialRating) Durability($durabilityRating) IQ($footballIqRating) Popularity($fanPopularity)
+Ratings: Overall($overallRating) Potential($potentialRating) Durability($durabilityRating) IQ($footballIqRating) Popularity($fanPopularity) Morale($morale)
 Position Ratings: $formattedPositionRatings
 ''';
   }
