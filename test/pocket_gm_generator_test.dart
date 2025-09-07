@@ -177,9 +177,9 @@ void main() {
       expect(playerString, contains('Position Ratings:'));
       
       // Should contain actual rating values
-      expect(playerString, contains('(${player.positionRating1})'));
-      expect(playerString, contains('(${player.positionRating2})'));
-      expect(playerString, contains('(${player.positionRating3})'));
+        expect(playerString, contains('(${player.positionRating1})'));
+        expect(playerString, contains('(${player.positionRating2})'));
+        expect(playerString, contains('(${player.positionRating3})'));
     });
 
     test('formattedPositionRatings includes attribute names for known positions', () {
@@ -387,7 +387,7 @@ void main() {
               greaterThan(expectedMean - 15), 
               lessThan(expectedMean + 15)
             ),
-            reason: '$position players should average around ${expectedMean} lbs, but averaged $avgWeight lbs'
+            reason: '$position players should average around $expectedMean lbs, but averaged $avgWeight lbs'
           );
         }
       }
@@ -445,7 +445,6 @@ void main() {
       expect(average, allOf(greaterThan(67.0), lessThan(73.0)));
       
       // Count ratings in different ranges
-      final below60 = ratings.where((r) => r < 60).length;
       final range60to79 = ratings.where((r) => r >= 60 && r < 80).length;
       final range80to89 = ratings.where((r) => r >= 80 && r < 90).length;
       final above90 = ratings.where((r) => r >= 90).length;

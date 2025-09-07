@@ -1,6 +1,4 @@
-import 'lib/src/models/staff.dart';
-import 'lib/src/models/team_tier.dart';
-import 'lib/src/services/staff_generator.dart';
+import 'package:pocket_gm_generator/pocket_gm_generator.dart';
 
 void main() {
   print('=== Single Team Staff Test ===\n');

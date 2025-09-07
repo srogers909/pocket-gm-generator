@@ -7,6 +7,7 @@ import '../models/team_tier.dart';
 import '../data/nfl_structure.dart';
 import '../data/team_names.dart';
 import 'team_generator.dart';
+import 'referee_generator.dart';
 
 /// Service for generating complete NFL-style leagues
 class LeagueGenerator {
@@ -68,9 +69,13 @@ class LeagueGenerator {
       conferences.add(conference);
     }
 
+    // Generate referee pool for the league
+    final refereePool = RefereeGenerator.generateRefereePool();
+
     return League(
       name: leagueName,
       conferences: conferences,
+      refereePool: refereePool,
     );
   }
 
@@ -103,7 +108,7 @@ class LeagueGenerator {
       attempts++;
       if (attempts > maxAttempts) {
         // If we can't find a unique name, use a numbered variant
-        teamName = '$city ${selectedName}_${attempts}';
+        teamName = '$city ${selectedName}_$attempts';
         break;
       }
     } while (usedNames.contains(teamName));
@@ -216,9 +221,13 @@ class LeagueGenerator {
       conferences.add(conference);
     }
 
+    // Generate referee pool for the custom league
+    final refereePool = RefereeGenerator.generateRefereePool();
+
     return League(
       name: leagueName,
       conferences: conferences,
+      refereePool: refereePool,
     );
   }
 
@@ -246,7 +255,7 @@ class LeagueGenerator {
       attempts++;
       if (attempts > maxAttempts) {
         // If we can't find a unique name, modify it
-        teamName = '${team.name}_${attempts}';
+        teamName = '${team.name}_$attempts';
         break;
       }
     } while (usedNames.contains(teamName));

@@ -1,6 +1,4 @@
-import 'lib/src/models/player.dart';
-import 'lib/src/models/team_tier.dart';
-import 'lib/src/services/player_generator.dart';
+import 'package:pocket_gm_generator/pocket_gm_generator.dart';
 
 void main() {
   print('=== Player Morale Test ===\n');

@@ -4,7 +4,6 @@ void main() {
   print('🎯 Player Rating Distribution Test');
   print('=' * 50);
   
-  final playerGenerator = PlayerGenerator();
   final teamGenerator = TeamGenerator();
   
   // Generate multiple teams to test rating distribution
@@ -58,7 +57,7 @@ void main() {
   print('=' * 25);
   for (final entry in ranges.entries) {
     final percentage = (entry.value / totalPlayers * 100).toStringAsFixed(1);
-    print('${entry.key}: ${entry.value} players (${percentage}%)');
+    print('${entry.key}: ${entry.value} players ($percentage%)');
   }
   
   // Find highest and lowest rated players

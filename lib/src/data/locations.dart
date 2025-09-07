@@ -1,4 +1,5 @@
 /// Location data for generating birth information
+library;
 
 /// US cities with states  
 const List<String> usCities = [

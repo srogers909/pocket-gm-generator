@@ -1,4 +1,4 @@
-import '../lib/pocket_gm_generator.dart';
+import 'package:pocket_gm_generator/pocket_gm_generator.dart';
 
 void main() {
   print('🏈 Generating NFL-style League 🏈');
@@ -29,7 +29,7 @@ void main() {
   final topTeams = league.teamsByRating.take(10);
   int rank = 1;
   for (final team in topTeams) {
-    print('${rank}. ${team.name} (${team.abbreviation}) - ${team.averageOverallRating.toStringAsFixed(1)}');
+    print('$rank. ${team.name} (${team.abbreviation}) - ${team.averageOverallRating.toStringAsFixed(1)}');
     rank++;
   }
   

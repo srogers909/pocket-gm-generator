@@ -1,4 +1,4 @@
-import '../lib/pocket_gm_generator.dart';
+import 'package:pocket_gm_generator/pocket_gm_generator.dart';
 
 void main() {
   print('🏈 NFL League Generation Test 🏈');
@@ -210,6 +210,6 @@ void main() {
     print('Stack trace: $stackTrace');
   }
   
-  print('\n' + '=' * 50);
+  print('\n${'=' * 50}');
   print('🏈 League Generation Test Complete 🏈');
 }

@@ -1,5 +1,6 @@
 /// Position-specific attribute definitions for football players
 /// Each position has three key attributes that define their effectiveness
+library;
 
 class PositionAttributes {
   final String attribute1;

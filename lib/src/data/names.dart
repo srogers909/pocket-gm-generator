@@ -1,4 +1,5 @@
 /// Name data for generating authentic player names based on ethnicity and nationality
+library;
 
 /// African American first names (male)
 const List<String> africanAmericanFirstNames = [

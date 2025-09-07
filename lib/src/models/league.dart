@@ -1,15 +1,18 @@
 import 'conference.dart';
 import 'division.dart';
 import 'team.dart';
+import 'referee.dart';
 
 /// Represents a complete league with two conferences and eight divisions
 class League {
   final String name;
   final List<Conference> conferences;
+  final List<Referee> refereePool;
 
   League({
     required this.name,
     required this.conferences,
+    required this.refereePool,
   });
 
   /// Gets the number of conferences in the league

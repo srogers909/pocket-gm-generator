@@ -1,5 +1,6 @@
 /// NFL league structure with exact divisions and city assignments
 /// This ensures teams are generated with the correct divisional alignment
+library;
 
 /// NFL Division structure with city assignments
 const Map<String, Map<String, List<String>>> nflStructure = {

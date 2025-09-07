@@ -1,5 +1,3 @@
-import '../data/names.dart';
-
 /// Container class for a complete team staff
 class TeamStaff {
   final HeadCoach headCoach;

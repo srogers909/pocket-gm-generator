@@ -1,5 +1,5 @@
-import '../lib/src/services/team_generator.dart';
-import '../lib/src/models/team_tier.dart';
+import 'package:pocket_gm_generator/src/services/team_generator.dart';
+import 'package:pocket_gm_generator/src/models/team_tier.dart';
 
 void main() {
   final teamGenerator = TeamGenerator();
@@ -27,8 +27,6 @@ void main() {
   print('-' * 45);
   
   final league = teamGenerator.generateLeague(8);
-  final sortedTeams = List<String>.from(league.map((team) => 
-    '${team.name.padRight(25)} | Avg: ${team.averageOverallRating.toStringAsFixed(1)}'));
   
   // Sort by rating for better visualization
   league.sort((a, b) => b.averageOverallRating.compareTo(a.averageOverallRating));
@@ -38,11 +36,17 @@ void main() {
     final rating = team.averageOverallRating;
     String tierGuess = '';
     
-    if (rating >= 83) tierGuess = '(Super Bowl Contender)';
-    else if (rating >= 78) tierGuess = '(Playoff Team)';
-    else if (rating >= 74) tierGuess = '(Average)';
-    else if (rating >= 69) tierGuess = '(Rebuilding)';
-    else tierGuess = '(Bad)';
+    if (rating >= 83) {
+      tierGuess = '(Super Bowl Contender)';
+    } else if (rating >= 78) {
+      tierGuess = '(Playoff Team)';
+    } else if (rating >= 74) {
+      tierGuess = '(Average)';
+    } else if (rating >= 69) {
+      tierGuess = '(Rebuilding)';
+    } else {
+      tierGuess = '(Bad)';
+    }
     
     print('${rank.toString().padLeft(2)}. ${team.name.padRight(25)} | ${rating.toStringAsFixed(1)} $tierGuess');
     rank++;

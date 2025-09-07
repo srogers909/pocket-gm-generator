@@ -1,4 +1,5 @@
 /// School data for generating authentic educational backgrounds
+library;
 
 /// Major colleges and universities (without years - will be generated dynamically)
 const List<String> colleges = [
