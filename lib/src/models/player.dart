@@ -47,6 +47,18 @@ class Player {
   /// Player morale rating (50-100)
   final int morale;
   
+  /// Draft year when player was selected
+  final int draftYear;
+  
+  /// Draft round (1-7, null if undrafted)
+  final int? draftRound;
+  
+  /// Draft pick number within the round (1-32, null if undrafted)
+  final int? draftPick;
+  
+  /// Formatted draft information string
+  final String draftInfo;
+  
   /// Position-specific rating 1 (0-100)
   final int positionRating1;
   
@@ -66,6 +78,10 @@ class Player {
     required this.weightLbs,
     required this.college,
     required this.birthInfo,
+    required this.draftYear,
+    this.draftRound,
+    this.draftPick,
+    required this.draftInfo,
     this.overallRating = 0,
     this.potentialRating = 0,
     this.durabilityRating = 0,

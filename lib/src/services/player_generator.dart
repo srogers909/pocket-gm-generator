@@ -45,6 +45,9 @@ class PlayerGenerator {
     final fanPopularity = 0; // New players start with no fan popularity
     final morale = _generateMorale(); // Generate high morale for new players
 
+    // Generate draft information
+    final draftInfo = _generateDraftInfo(year, overallRating);
+
     return Player(
       fullName: names['full']!,
       commonName: names['common']!,
@@ -55,6 +58,10 @@ class PlayerGenerator {
       weightLbs: weight,
       college: college,
       birthInfo: birthInfo,
+      draftYear: draftInfo['year'],
+      draftRound: draftInfo['round'],
+      draftPick: draftInfo['pick'],
+      draftInfo: draftInfo['info'],
       overallRating: overallRating,
       potentialRating: potentialRating,
       durabilityRating: durabilityRating,
@@ -103,6 +110,9 @@ class PlayerGenerator {
     final fanPopularity = 0; // New players start with no fan popularity
     final morale = _generateMorale(); // Generate high morale for veteran players
 
+    // Generate draft information for veteran based on their age
+    final draftInfo = _generateVeteranDraftInfo(year, playerAge, overallRating);
+
     return Player(
       fullName: names['full']!,
       commonName: names['common']!,
@@ -113,6 +123,10 @@ class PlayerGenerator {
       weightLbs: weight,
       college: college,
       birthInfo: birthInfo,
+      draftYear: draftInfo['year'],
+      draftRound: draftInfo['round'],
+      draftPick: draftInfo['pick'],
+      draftInfo: draftInfo['info'],
       overallRating: overallRating,
       potentialRating: potentialRating,
       durabilityRating: durabilityRating,
@@ -401,5 +415,173 @@ class PlayerGenerator {
   /// Calculates overall rating as average of three position-specific ratings
   int _calculateOverallRating(int rating1, int rating2, int rating3) {
     return ((rating1 + rating2 + rating3) / 3).ceil();
+  }
+
+  /// Generates draft information for rookie players
+  Map<String, dynamic> _generateDraftInfo(int currentYear, int overallRating) {
+    // Undrafted chance based on rating - elite players almost always get drafted
+    int undraftedChance;
+    if (overallRating >= 85) {
+      undraftedChance = 1; // 1% chance for elite players
+    } else if (overallRating >= 75) {
+      undraftedChance = 5; // 5% chance for good players
+    } else if (overallRating >= 65) {
+      undraftedChance = 15; // 15% chance for average players
+    } else {
+      undraftedChance = 30; // 30% chance for lower-rated players
+    }
+    final isUndrafted = _random.nextInt(100) < undraftedChance;
+
+    if (isUndrafted) {
+      return {
+        'year': currentYear,
+        'round': null,
+        'pick': null,
+        'info': 'Undrafted Free Agent ($currentYear)',
+      };
+    }
+
+    // Generate draft position based on rating
+    int round;
+    int pick;
+
+    // Higher ratings get drafted earlier
+    if (overallRating >= 85) {
+      // Top players: Rounds 1-2
+      round = 1 + _random.nextInt(2);
+    } else if (overallRating >= 75) {
+      // Good players: Rounds 2-4
+      round = 2 + _random.nextInt(3);
+    } else if (overallRating >= 65) {
+      // Average players: Rounds 4-6
+      round = 4 + _random.nextInt(3);
+    } else {
+      // Lower rated players: Rounds 6-7
+      round = 6 + _random.nextInt(2);
+    }
+
+    // Generate pick within round (1-32 for most rounds, 1-35 for round 7)
+    pick = 1 + _random.nextInt(round == 7 ? 35 : 32);
+
+    // Calculate overall pick number
+    int overallPick;
+    switch (round) {
+      case 1:
+        overallPick = pick;
+        break;
+      case 2:
+        overallPick = 32 + pick;
+        break;
+      case 3:
+        overallPick = 64 + pick;
+        break;
+      case 4:
+        overallPick = 96 + pick;
+        break;
+      case 5:
+        overallPick = 128 + pick;
+        break;
+      case 6:
+        overallPick = 160 + pick;
+        break;
+      case 7:
+        overallPick = 192 + pick;
+        break;
+      default:
+        overallPick = pick;
+    }
+
+    return {
+      'year': currentYear,
+      'round': round,
+      'pick': pick,
+      'info': '$currentYear Draft - Round $round, Pick $pick (#$overallPick overall)',
+    };
+  }
+
+  /// Generates draft information for veteran players based on their age
+  Map<String, dynamic> _generateVeteranDraftInfo(int currentYear, int playerAge, int overallRating) {
+    // Calculate draft year based on age (most players drafted at 21-23)
+    final draftAge = 21 + _random.nextInt(3); // 21, 22, or 23
+    final draftYear = currentYear - (playerAge - draftAge);
+
+    // Undrafted chance based on rating and age - elite players almost always get drafted
+    int undraftedChance;
+    if (overallRating >= 85) {
+      undraftedChance = playerAge > 30 ? 3 : 2; // 2-3% chance for elite players
+    } else if (overallRating >= 75) {
+      undraftedChance = playerAge > 30 ? 8 : 6; // 6-8% chance for good players
+    } else if (overallRating >= 65) {
+      undraftedChance = playerAge > 30 ? 20 : 15; // 15-20% chance for average players
+    } else {
+      undraftedChance = playerAge > 30 ? 40 : 30; // 30-40% chance for lower-rated players
+    }
+    final isUndrafted = _random.nextInt(100) < undraftedChance;
+
+    if (isUndrafted) {
+      return {
+        'year': draftYear,
+        'round': null,
+        'pick': null,
+        'info': 'Undrafted Free Agent ($draftYear)',
+      };
+    }
+
+    // Generate draft position based on rating and age
+    int round;
+    int pick;
+
+    // Adjust rating based on age (older veterans might have been drafted lower)
+    int adjustedRating = overallRating;
+    if (playerAge > 28) {
+      adjustedRating = (overallRating * 0.9).round(); // Slightly lower for older players
+    }
+
+    if (adjustedRating >= 85) {
+      round = 1 + _random.nextInt(2);
+    } else if (adjustedRating >= 75) {
+      round = 2 + _random.nextInt(3);
+    } else if (adjustedRating >= 65) {
+      round = 4 + _random.nextInt(3);
+    } else {
+      round = 6 + _random.nextInt(2);
+    }
+
+    pick = 1 + _random.nextInt(round == 7 ? 35 : 32);
+
+    // Calculate overall pick number
+    int overallPick;
+    switch (round) {
+      case 1:
+        overallPick = pick;
+        break;
+      case 2:
+        overallPick = 32 + pick;
+        break;
+      case 3:
+        overallPick = 64 + pick;
+        break;
+      case 4:
+        overallPick = 96 + pick;
+        break;
+      case 5:
+        overallPick = 128 + pick;
+        break;
+      case 6:
+        overallPick = 160 + pick;
+        break;
+      case 7:
+        overallPick = 192 + pick;
+        break;
+      default:
+        overallPick = pick;
+    }
+
+    return {
+      'year': draftYear,
+      'round': round,
+      'pick': pick,
+      'info': '$draftYear Draft - Round $round, Pick $pick (#$overallPick overall)',
+    };
   }
 }
