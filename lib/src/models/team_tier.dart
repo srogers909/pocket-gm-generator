@@ -17,11 +17,11 @@ extension TeamTierConfig on TeamTier {
       case TeamTier.playoffTeam:
         return 80.0; // Above average teams
       case TeamTier.average:
-        return 76.0; // Current baseline
+        return 70.0; // Baseline centered at 70 for bell curve distribution
       case TeamTier.rebuilding:
-        return 71.0; // Below average teams
+        return 65.0; // Below average teams
       case TeamTier.bad:
-        return 66.0; // Poor teams with low-rated players
+        return 60.0; // Poor teams with low-rated players
     }
   }
 

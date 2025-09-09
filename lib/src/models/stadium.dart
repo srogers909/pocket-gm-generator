@@ -37,6 +37,42 @@ class Stadium {
     required this.homeFieldAdvantage,
   });
 
+  /// Converts the Stadium to a JSON representation
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'location': location,
+      'turfType': turfType.name,
+      'roofType': roofType.name,
+      'capacity': capacity,
+      'yearBuilt': yearBuilt,
+      'luxurySuites': luxurySuites,
+      'concessionsRating': concessionsRating,
+      'parkingRating': parkingRating,
+      'homeFieldAdvantage': homeFieldAdvantage,
+    };
+  }
+
+  /// Creates a Stadium from a JSON representation
+  factory Stadium.fromJson(Map<String, dynamic> json) {
+    return Stadium(
+      name: json['name'] as String,
+      location: json['location'] as String,
+      turfType: TurfType.values.firstWhere(
+        (e) => e.name == json['turfType'],
+      ),
+      roofType: RoofType.values.firstWhere(
+        (e) => e.name == json['roofType'],
+      ),
+      capacity: json['capacity'] as int,
+      yearBuilt: json['yearBuilt'] as int,
+      luxurySuites: json['luxurySuites'] as int,
+      concessionsRating: json['concessionsRating'] as int,
+      parkingRating: json['parkingRating'] as int,
+      homeFieldAdvantage: json['homeFieldAdvantage'] as int,
+    );
+  }
+
   @override
   String toString() {
     return 'Stadium('

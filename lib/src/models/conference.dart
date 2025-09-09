@@ -52,6 +52,30 @@ class Conference {
     }
   }
 
+  /// Converts the Conference to a JSON representation
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'abbreviation': abbreviation,
+      'divisions': divisions.map((division) => division.toJson()).toList(),
+      // Computed properties
+      'divisionCount': divisionCount,
+      'teamCount': teamCount,
+      'averageRating': averageRating,
+    };
+  }
+
+  /// Creates a Conference from a JSON representation
+  factory Conference.fromJson(Map<String, dynamic> json) {
+    return Conference(
+      name: json['name'] as String,
+      abbreviation: json['abbreviation'] as String,
+      divisions: (json['divisions'] as List<dynamic>)
+          .map((divisionJson) => Division.fromJson(divisionJson as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
   @override
   String toString() {
     final buffer = StringBuffer();

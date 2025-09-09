@@ -115,6 +115,64 @@ class Player {
     return '${attributes.attribute1}($positionRating1) ${attributes.attribute2}($positionRating2) ${attributes.attribute3}($positionRating3)';
   }
 
+  /// Converts the player to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'fullName': fullName,
+      'commonName': commonName,
+      'shortName': shortName,
+      'fanNickname': fanNickname,
+      'primaryPosition': primaryPosition,
+      'heightInches': heightInches,
+      'weightLbs': weightLbs,
+      'college': college,
+      'birthInfo': birthInfo,
+      'overallRating': overallRating,
+      'potentialRating': potentialRating,
+      'durabilityRating': durabilityRating,
+      'footballIqRating': footballIqRating,
+      'fanPopularity': fanPopularity,
+      'morale': morale,
+      'draftYear': draftYear,
+      'draftRound': draftRound,
+      'draftPick': draftPick,
+      'draftInfo': draftInfo,
+      'positionRating1': positionRating1,
+      'positionRating2': positionRating2,
+      'positionRating3': positionRating3,
+      'heightFormatted': heightFormatted,
+      'formattedPositionRatings': formattedPositionRatings,
+    };
+  }
+
+  /// Creates a player from JSON
+  factory Player.fromJson(Map<String, dynamic> json) {
+    return Player(
+      fullName: json['fullName'] as String,
+      commonName: json['commonName'] as String,
+      shortName: json['shortName'] as String,
+      fanNickname: json['fanNickname'] as String?,
+      primaryPosition: json['primaryPosition'] as String,
+      heightInches: json['heightInches'] as int,
+      weightLbs: json['weightLbs'] as int,
+      college: json['college'] as String,
+      birthInfo: json['birthInfo'] as String,
+      overallRating: json['overallRating'] as int,
+      potentialRating: json['potentialRating'] as int,
+      durabilityRating: json['durabilityRating'] as int,
+      footballIqRating: json['footballIqRating'] as int,
+      fanPopularity: json['fanPopularity'] as int,
+      morale: json['morale'] as int,
+      draftYear: json['draftYear'] as int,
+      draftRound: json['draftRound'] as int?,
+      draftPick: json['draftPick'] as int?,
+      draftInfo: json['draftInfo'] as String,
+      positionRating1: json['positionRating1'] as int,
+      positionRating2: json['positionRating2'] as int,
+      positionRating3: json['positionRating3'] as int,
+    );
+  }
+
   @override
   String toString() {
     return '''

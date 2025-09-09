@@ -59,6 +59,52 @@ class Referee {
     'clipping': clippingTendency,
   };
 
+  /// Converts the Referee to a JSON representation
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'yearHired': yearHired,
+      'yearRetired': yearRetired,
+      'holdingTendency': holdingTendency,
+      'passInterferenceTendency': passInterferenceTendency,
+      'roughingThePasserTendency': roughingThePasserTendency,
+      'falseStartTendency': falseStartTendency,
+      'offensiveHoldingTendency': offensiveHoldingTendency,
+      'defensivePassInterferenceTendency': defensivePassInterferenceTendency,
+      'unnecessaryRoughnessTendency': unnecessaryRoughnessTendency,
+      'personalFoulTendency': personalFoulTendency,
+      'delayOfGameTendency': delayOfGameTendency,
+      'illegalFormationTendency': illegalFormationTendency,
+      'facemaskTendency': facemaskTendency,
+      'clippingTendency': clippingTendency,
+      // Computed properties
+      'isActive': isActive,
+      'yearsOfExperience': yearsOfExperience,
+      'penaltyTendencies': penaltyTendencies,
+    };
+  }
+
+  /// Creates a Referee from a JSON representation
+  factory Referee.fromJson(Map<String, dynamic> json) {
+    return Referee(
+      name: json['name'] as String,
+      yearHired: json['yearHired'] as int,
+      yearRetired: json['yearRetired'] as int?,
+      holdingTendency: json['holdingTendency'] as int,
+      passInterferenceTendency: json['passInterferenceTendency'] as int,
+      roughingThePasserTendency: json['roughingThePasserTendency'] as int,
+      falseStartTendency: json['falseStartTendency'] as int,
+      offensiveHoldingTendency: json['offensiveHoldingTendency'] as int,
+      defensivePassInterferenceTendency: json['defensivePassInterferenceTendency'] as int,
+      unnecessaryRoughnessTendency: json['unnecessaryRoughnessTendency'] as int,
+      personalFoulTendency: json['personalFoulTendency'] as int,
+      delayOfGameTendency: json['delayOfGameTendency'] as int,
+      illegalFormationTendency: json['illegalFormationTendency'] as int,
+      facemaskTendency: json['facemaskTendency'] as int,
+      clippingTendency: json['clippingTendency'] as int,
+    );
+  }
+
   @override
   String toString() {
     return 'Referee(name: $name, yearHired: $yearHired, yearRetired: $yearRetired, '

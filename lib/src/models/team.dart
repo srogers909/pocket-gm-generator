@@ -175,4 +175,49 @@ class Team {
     
     return buffer.toString();
   }
+
+  /// Converts the team to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'abbreviation': abbreviation,
+      'primaryColor': primaryColor,
+      'secondaryColor': secondaryColor,
+      'roster': roster.map((player) => player.toJson()).toList(),
+      'staff': staff?.toJson(),
+      'stadium': stadium.toJson(),
+      'fanHappiness': fanHappiness,
+      'conference': conference,
+      'division': division,
+      'city': city,
+      'tier': tier?.name,
+      'averageOverallRating': averageOverallRating,
+      'teamMorale': teamMorale,
+      'rosterSize': rosterSize,
+    };
+  }
+
+  /// Creates a team from JSON
+  factory Team.fromJson(Map<String, dynamic> json) {
+    return Team(
+      name: json['name'] as String,
+      abbreviation: json['abbreviation'] as String,
+      primaryColor: json['primaryColor'] as String,
+      secondaryColor: json['secondaryColor'] as String,
+      roster: (json['roster'] as List<dynamic>)
+          .map((playerJson) => Player.fromJson(playerJson as Map<String, dynamic>))
+          .toList(),
+      staff: json['staff'] != null 
+          ? TeamStaff.fromJson(json['staff'] as Map<String, dynamic>)
+          : null,
+      stadium: Stadium.fromJson(json['stadium'] as Map<String, dynamic>),
+      fanHappiness: json['fanHappiness'] as int,
+      conference: json['conference'] as String?,
+      division: json['division'] as String?,
+      city: json['city'] as String?,
+      tier: json['tier'] != null 
+          ? TeamTier.values.firstWhere((t) => t.name == json['tier'])
+          : null,
+    );
+  }
 }

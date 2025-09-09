@@ -22,6 +22,28 @@ class TeamStaff {
     teamDoctor,
     headScout,
   ];
+
+  /// Converts the TeamStaff to a JSON representation
+  Map<String, dynamic> toJson() {
+    return {
+      'headCoach': headCoach.toJson(),
+      'offensiveCoordinator': offensiveCoordinator.toJson(),
+      'defensiveCoordinator': defensiveCoordinator.toJson(),
+      'teamDoctor': teamDoctor.toJson(),
+      'headScout': headScout.toJson(),
+    };
+  }
+
+  /// Creates a TeamStaff from a JSON representation
+  factory TeamStaff.fromJson(Map<String, dynamic> json) {
+    return TeamStaff(
+      headCoach: HeadCoach.fromJson(json['headCoach'] as Map<String, dynamic>),
+      offensiveCoordinator: OffensiveCoordinator.fromJson(json['offensiveCoordinator'] as Map<String, dynamic>),
+      defensiveCoordinator: DefensiveCoordinator.fromJson(json['defensiveCoordinator'] as Map<String, dynamic>),
+      teamDoctor: TeamDoctor.fromJson(json['teamDoctor'] as Map<String, dynamic>),
+      headScout: HeadScout.fromJson(json['headScout'] as Map<String, dynamic>),
+    );
+  }
 }
 
 /// Base class for all staff members
@@ -59,6 +81,9 @@ abstract class Staff {
 
   /// Returns the position title (implemented by subclasses)
   String get position;
+
+  /// Converts the Staff to a JSON representation (implemented by subclasses)
+  Map<String, dynamic> toJson();
 
   @override
   String toString() {
@@ -102,6 +127,41 @@ class HeadCoach extends Staff {
   String get position => 'Head Coach';
 
   @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'HeadCoach',
+      'fullName': fullName,
+      'commonName': commonName,
+      'shortName': shortName,
+      'age': age,
+      'yearsExperience': yearsExperience,
+      'overallRating': overallRating,
+      'morale': morale,
+      'leadership': leadership,
+      'gameManagement': gameManagement,
+      'playerDevelopment': playerDevelopment,
+      'schemeKnowledge': schemeKnowledge,
+    };
+  }
+
+  /// Creates a HeadCoach from a JSON representation
+  factory HeadCoach.fromJson(Map<String, dynamic> json) {
+    return HeadCoach(
+      fullName: json['fullName'] as String,
+      commonName: json['commonName'] as String,
+      shortName: json['shortName'] as String,
+      age: json['age'] as int,
+      yearsExperience: json['yearsExperience'] as int,
+      overallRating: json['overallRating'] as int,
+      morale: json['morale'] as int,
+      leadership: json['leadership'] as int,
+      gameManagement: json['gameManagement'] as int,
+      playerDevelopment: json['playerDevelopment'] as int,
+      schemeKnowledge: json['schemeKnowledge'] as int,
+    );
+  }
+
+  @override
   String toString() {
     return '''
 ${super.toString()}Attributes: Leadership($leadership) Game Management($gameManagement) Player Development($playerDevelopment) Scheme Knowledge($schemeKnowledge)
@@ -139,6 +199,41 @@ class OffensiveCoordinator extends Staff {
 
   @override
   String get position => 'Offensive Coordinator';
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'OffensiveCoordinator',
+      'fullName': fullName,
+      'commonName': commonName,
+      'shortName': shortName,
+      'age': age,
+      'yearsExperience': yearsExperience,
+      'overallRating': overallRating,
+      'morale': morale,
+      'playCalling': playCalling,
+      'passingOffense': passingOffense,
+      'rushingOffense': rushingOffense,
+      'offensiveLineExpertise': offensiveLineExpertise,
+    };
+  }
+
+  /// Creates an OffensiveCoordinator from a JSON representation
+  factory OffensiveCoordinator.fromJson(Map<String, dynamic> json) {
+    return OffensiveCoordinator(
+      fullName: json['fullName'] as String,
+      commonName: json['commonName'] as String,
+      shortName: json['shortName'] as String,
+      age: json['age'] as int,
+      yearsExperience: json['yearsExperience'] as int,
+      overallRating: json['overallRating'] as int,
+      morale: json['morale'] as int,
+      playCalling: json['playCalling'] as int,
+      passingOffense: json['passingOffense'] as int,
+      rushingOffense: json['rushingOffense'] as int,
+      offensiveLineExpertise: json['offensiveLineExpertise'] as int,
+    );
+  }
 
   @override
   String toString() {
@@ -180,6 +275,41 @@ class DefensiveCoordinator extends Staff {
   String get position => 'Defensive Coordinator';
 
   @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'DefensiveCoordinator',
+      'fullName': fullName,
+      'commonName': commonName,
+      'shortName': shortName,
+      'age': age,
+      'yearsExperience': yearsExperience,
+      'overallRating': overallRating,
+      'morale': morale,
+      'defensivePlayCalling': defensivePlayCalling,
+      'passingDefense': passingDefense,
+      'rushingDefense': rushingDefense,
+      'defensiveLineExpertise': defensiveLineExpertise,
+    };
+  }
+
+  /// Creates a DefensiveCoordinator from a JSON representation
+  factory DefensiveCoordinator.fromJson(Map<String, dynamic> json) {
+    return DefensiveCoordinator(
+      fullName: json['fullName'] as String,
+      commonName: json['commonName'] as String,
+      shortName: json['shortName'] as String,
+      age: json['age'] as int,
+      yearsExperience: json['yearsExperience'] as int,
+      overallRating: json['overallRating'] as int,
+      morale: json['morale'] as int,
+      defensivePlayCalling: json['defensivePlayCalling'] as int,
+      passingDefense: json['passingDefense'] as int,
+      rushingDefense: json['rushingDefense'] as int,
+      defensiveLineExpertise: json['defensiveLineExpertise'] as int,
+    );
+  }
+
+  @override
   String toString() {
     return '''
 ${super.toString()}Attributes: Defensive Play Calling($defensivePlayCalling) Passing Defense($passingDefense) Rushing Defense($rushingDefense) DL Expertise($defensiveLineExpertise)
@@ -219,6 +349,41 @@ class TeamDoctor extends Staff {
   String get position => 'Team Doctor';
 
   @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'TeamDoctor',
+      'fullName': fullName,
+      'commonName': commonName,
+      'shortName': shortName,
+      'age': age,
+      'yearsExperience': yearsExperience,
+      'overallRating': overallRating,
+      'morale': morale,
+      'injuryPrevention': injuryPrevention,
+      'rehabilitationSpeed': rehabilitationSpeed,
+      'misdiagnosisPrevention': misdiagnosisPrevention,
+      'staminaRecovery': staminaRecovery,
+    };
+  }
+
+  /// Creates a TeamDoctor from a JSON representation
+  factory TeamDoctor.fromJson(Map<String, dynamic> json) {
+    return TeamDoctor(
+      fullName: json['fullName'] as String,
+      commonName: json['commonName'] as String,
+      shortName: json['shortName'] as String,
+      age: json['age'] as int,
+      yearsExperience: json['yearsExperience'] as int,
+      overallRating: json['overallRating'] as int,
+      morale: json['morale'] as int,
+      injuryPrevention: json['injuryPrevention'] as int,
+      rehabilitationSpeed: json['rehabilitationSpeed'] as int,
+      misdiagnosisPrevention: json['misdiagnosisPrevention'] as int,
+      staminaRecovery: json['staminaRecovery'] as int,
+    );
+  }
+
+  @override
   String toString() {
     return '''
 ${super.toString()}Attributes: Injury Prevention($injuryPrevention) Rehabilitation Speed($rehabilitationSpeed) Misdiagnosis Prevention($misdiagnosisPrevention) Stamina Recovery($staminaRecovery)
@@ -256,6 +421,41 @@ class HeadScout extends Staff {
 
   @override
   String get position => 'Head Scout';
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'type': 'HeadScout',
+      'fullName': fullName,
+      'commonName': commonName,
+      'shortName': shortName,
+      'age': age,
+      'yearsExperience': yearsExperience,
+      'overallRating': overallRating,
+      'morale': morale,
+      'collegeScouting': collegeScouting,
+      'proScouting': proScouting,
+      'potentialIdentification': potentialIdentification,
+      'tradeEvaluation': tradeEvaluation,
+    };
+  }
+
+  /// Creates a HeadScout from a JSON representation
+  factory HeadScout.fromJson(Map<String, dynamic> json) {
+    return HeadScout(
+      fullName: json['fullName'] as String,
+      commonName: json['commonName'] as String,
+      shortName: json['shortName'] as String,
+      age: json['age'] as int,
+      yearsExperience: json['yearsExperience'] as int,
+      overallRating: json['overallRating'] as int,
+      morale: json['morale'] as int,
+      collegeScouting: json['collegeScouting'] as int,
+      proScouting: json['proScouting'] as int,
+      potentialIdentification: json['potentialIdentification'] as int,
+      tradeEvaluation: json['tradeEvaluation'] as int,
+    );
+  }
 
   @override
   String toString() {

@@ -385,8 +385,8 @@ class PlayerGenerator {
     // Scale and shift using tier-specific parameters
     double normalValue = mean + (z0 * stdDev);
     
-    // Clamp to valid range and round up to integer
-    return normalValue.clamp(55, 110).ceil();
+    // Clamp to valid range and round to nearest integer
+    return normalValue.clamp(55, 110).round();
   }
 
   /// Generates Football IQ with potential boost for QBs and Safeties
@@ -414,7 +414,7 @@ class PlayerGenerator {
 
   /// Calculates overall rating as average of three position-specific ratings
   int _calculateOverallRating(int rating1, int rating2, int rating3) {
-    return ((rating1 + rating2 + rating3) / 3).ceil();
+    return ((rating1 + rating2 + rating3) / 3).round();
   }
 
   /// Generates draft information for rookie players

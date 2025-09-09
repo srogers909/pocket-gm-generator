@@ -111,6 +111,34 @@ class League {
     };
   }
 
+  /// Converts the League to a JSON representation
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'conferences': conferences.map((conference) => conference.toJson()).toList(),
+      'refereePool': refereePool.map((referee) => referee.toJson()).toList(),
+      // Computed properties
+      'conferenceCount': conferenceCount,
+      'divisionCount': divisionCount,
+      'teamCount': teamCount,
+      'averageRating': averageRating,
+      'statistics': statistics,
+    };
+  }
+
+  /// Creates a League from a JSON representation
+  factory League.fromJson(Map<String, dynamic> json) {
+    return League(
+      name: json['name'] as String,
+      conferences: (json['conferences'] as List<dynamic>)
+          .map((conferenceJson) => Conference.fromJson(conferenceJson as Map<String, dynamic>))
+          .toList(),
+      refereePool: (json['refereePool'] as List<dynamic>)
+          .map((refereeJson) => Referee.fromJson(refereeJson as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
   @override
   String toString() {
     final buffer = StringBuffer();

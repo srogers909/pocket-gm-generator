@@ -27,6 +27,27 @@ class Division {
     return sortedTeams;
   }
 
+  /// Converts the Division to a JSON representation
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'teams': teams.map((team) => team.toJson()).toList(),
+      // Computed properties
+      'teamCount': teamCount,
+      'averageRating': averageRating,
+    };
+  }
+
+  /// Creates a Division from a JSON representation
+  factory Division.fromJson(Map<String, dynamic> json) {
+    return Division(
+      name: json['name'] as String,
+      teams: (json['teams'] as List<dynamic>)
+          .map((teamJson) => Team.fromJson(teamJson as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
   @override
   String toString() {
     final buffer = StringBuffer();
