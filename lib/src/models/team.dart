@@ -17,6 +17,8 @@ class Team {
   final String? division;
   final String? city;
   final TeamTier? tier;
+  final int wins;
+  final int losses;
 
   Team({
     required this.name,
@@ -26,6 +28,8 @@ class Team {
     required this.roster,
     required this.stadium,
     required this.fanHappiness,
+    required this.wins,
+    required this.losses,
     this.staff,
     this.conference,
     this.division,
@@ -191,6 +195,8 @@ class Team {
       'division': division,
       'city': city,
       'tier': tier?.name,
+      'wins': wins,
+      'losses': losses,
       'averageOverallRating': averageOverallRating,
       'teamMorale': teamMorale,
       'rosterSize': rosterSize,
@@ -212,6 +218,8 @@ class Team {
           : null,
       stadium: Stadium.fromJson(json['stadium'] as Map<String, dynamic>),
       fanHappiness: json['fanHappiness'] as int,
+      wins: json['wins'] as int? ?? 0,
+      losses: json['losses'] as int? ?? 0,
       conference: json['conference'] as String?,
       division: json['division'] as String?,
       city: json['city'] as String?,

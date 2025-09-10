@@ -94,6 +94,9 @@ class TeamGenerator {
     final teamRating = roster.fold<int>(0, (sum, player) => sum + player.overallRating) / roster.length;
     final fanHappiness = _generateFanHappiness(teamRating);
 
+    // Generate realistic win-loss record based on team tier and quality
+    final (wins, losses) = _generateWinLossRecord(tier, teamRating);
+
     return Team(
       name: fullName,
       abbreviation: abbreviation,
@@ -102,6 +105,8 @@ class TeamGenerator {
       roster: roster,
       stadium: stadium,
       fanHappiness: fanHappiness,
+      wins: wins,
+      losses: losses,
       staff: staff,
     );
   }
@@ -235,6 +240,9 @@ class TeamGenerator {
     final teamRating = roster.fold<int>(0, (sum, player) => sum + player.overallRating) / roster.length;
     final fanHappiness = _generateFanHappiness(teamRating);
 
+    // Generate realistic win-loss record for veteran teams (typically average tier)
+    final (wins, losses) = _generateWinLossRecord(TeamTier.average, teamRating);
+
     return Team(
       name: fullName,
       abbreviation: abbreviation,
@@ -243,6 +251,8 @@ class TeamGenerator {
       roster: roster,
       stadium: stadium,
       fanHappiness: fanHappiness,
+      wins: wins,
+      losses: losses,
       staff: staff,
     );
   }
@@ -299,5 +309,58 @@ class TeamGenerator {
     
     // Ensure it stays within 50-100 range
     return max(50, min(100, baseFanHappiness));
+  }
+
+  /// Generates realistic win-loss record based on team tier and overall rating
+  /// Returns a record for a typical 17-game NFL season
+  (int wins, int losses) _generateWinLossRecord(TeamTier? tier, double teamRating) {
+    // Determine base win expectation based on team tier and rating
+    int baseWins;
+    
+    // Primary factor: team tier
+    switch (tier) {
+      case TeamTier.superBowlContender:
+        baseWins = 13 + _random.nextInt(3); // 13-15 wins
+        break;
+      case TeamTier.playoffTeam:
+        baseWins = 10 + _random.nextInt(3); // 10-12 wins
+        break;
+      case TeamTier.average:
+        baseWins = 7 + _random.nextInt(4); // 7-10 wins
+        break;
+      case TeamTier.rebuilding:
+        baseWins = 4 + _random.nextInt(4); // 4-7 wins
+        break;
+      case TeamTier.bad:
+        baseWins = 1 + _random.nextInt(4); // 1-4 wins
+        break;
+      case null:
+        // If no tier specified, use team rating
+        if (teamRating >= 85.0) {
+          baseWins = 12 + _random.nextInt(4); // 12-15 wins
+        } else if (teamRating >= 80.0) {
+          baseWins = 9 + _random.nextInt(4); // 9-12 wins
+        } else if (teamRating >= 76.0) {
+          baseWins = 7 + _random.nextInt(4); // 7-10 wins
+        } else if (teamRating >= 71.0) {
+          baseWins = 5 + _random.nextInt(4); // 5-8 wins
+        } else {
+          baseWins = 2 + _random.nextInt(4); // 2-5 wins
+        }
+        break;
+    }
+    
+    // Secondary adjustment based on team rating (fine-tuning)
+    if (teamRating >= 85.0 && baseWins < 12) {
+      baseWins += 1; // Elite talent should have good records
+    } else if (teamRating < 71.0 && baseWins > 6) {
+      baseWins -= 1; // Poor talent should struggle
+    }
+    
+    // Ensure wins stay within realistic bounds (0-17)
+    final wins = max(0, min(17, baseWins));
+    final losses = 17 - wins;
+    
+    return (wins, losses);
   }
 }
