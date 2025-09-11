@@ -87,8 +87,8 @@ class TeamGenerator {
     // Generate staff with tier-based quality
     final staff = _staffGenerator.generateTeamStaff(tier ?? TeamTier.average);
     
-    // Generate stadium
-    final stadium = _stadiumGenerator.generateStadium();
+    // Generate stadium with the specific city location
+    final stadium = _stadiumGenerator.generateStadium(specificLocation: city);
     
     // Calculate fan happiness based on team's overall rating
     final teamRating = roster.fold<int>(0, (sum, player) => sum + player.overallRating) / roster.length;
@@ -108,6 +108,7 @@ class TeamGenerator {
       wins: wins,
       losses: losses,
       staff: staff,
+      city: city,
     );
   }
 
@@ -233,8 +234,8 @@ class TeamGenerator {
     // Generate average-tier staff for veteran teams
     final staff = _staffGenerator.generateTeamStaff(TeamTier.average);
     
-    // Generate stadium
-    final stadium = _stadiumGenerator.generateStadium();
+    // Generate stadium with the specific city location
+    final stadium = _stadiumGenerator.generateStadium(specificLocation: city);
     
     // Calculate fan happiness based on team's overall rating
     final teamRating = roster.fold<int>(0, (sum, player) => sum + player.overallRating) / roster.length;
@@ -254,6 +255,7 @@ class TeamGenerator {
       wins: wins,
       losses: losses,
       staff: staff,
+      city: city,
     );
   }
 

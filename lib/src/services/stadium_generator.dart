@@ -74,11 +74,12 @@ class StadiumGenerator {
   ];
 
   /// Generates a random stadium
-  Stadium generateStadium() {
+  /// If [specificLocation] is provided, uses that location instead of generating a random one
+  Stadium generateStadium({String? specificLocation}) {
     final int capacity = _generateCapacity();
     return Stadium(
       name: _generateName(),
-      location: _generateLocation(),
+      location: specificLocation ?? _generateLocation(),
       turfType: _generateTurfType(),
       roofType: _generateRoofType(),
       capacity: capacity,
