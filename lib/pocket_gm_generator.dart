@@ -14,6 +14,7 @@ export 'src/models/division.dart';
 export 'src/models/conference.dart';
 export 'src/models/league.dart';
 export 'src/models/referee.dart';
+export 'src/models/positions.dart';
 export 'src/services/player_generator.dart';
 export 'src/services/team_generator.dart';
 export 'src/services/staff_generator.dart';

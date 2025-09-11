@@ -67,6 +67,9 @@ class Player {
   
   /// Position-specific rating 3 (0-100)
   final int positionRating3;
+  
+  /// Evasion rating indicating ability to avoid sacks and pressure (0-100)
+  final int evasion;
 
   Player({
     required this.fullName,
@@ -91,6 +94,7 @@ class Player {
     this.positionRating1 = 0,
     this.positionRating2 = 0,
     this.positionRating3 = 0,
+    this.evasion = 0,
   });
 
   /// Returns height in feet and inches format (e.g., "6'2\"")
@@ -140,6 +144,7 @@ class Player {
       'positionRating1': positionRating1,
       'positionRating2': positionRating2,
       'positionRating3': positionRating3,
+      'evasion': evasion,
       'heightFormatted': heightFormatted,
       'formattedPositionRatings': formattedPositionRatings,
     };
@@ -170,6 +175,7 @@ class Player {
       positionRating1: json['positionRating1'] as int,
       positionRating2: json['positionRating2'] as int,
       positionRating3: json['positionRating3'] as int,
+      evasion: json['evasion'] as int,
     );
   }
 

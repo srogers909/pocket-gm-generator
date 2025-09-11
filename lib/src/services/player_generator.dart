@@ -48,6 +48,10 @@ class PlayerGenerator {
     // Generate draft information
     final draftInfo = _generateDraftInfo(year, overallRating);
 
+    // Set evasion attribute based on position
+    // QB and RB use evasion as their attribute3, other positions default to 0
+    final evasion = _getEvasionForPosition(position, positionRating3);
+
     return Player(
       fullName: names['full']!,
       commonName: names['common']!,
@@ -71,6 +75,7 @@ class PlayerGenerator {
       positionRating1: positionRating1,
       positionRating2: positionRating2,
       positionRating3: positionRating3,
+      evasion: evasion,
     );
   }
 
@@ -113,6 +118,10 @@ class PlayerGenerator {
     // Generate draft information for veteran based on their age
     final draftInfo = _generateVeteranDraftInfo(year, playerAge, overallRating);
 
+    // Set evasion attribute based on position
+    // QB and RB use evasion as their attribute3, other positions default to 0
+    final evasion = _getEvasionForPosition(position, positionRating3);
+
     return Player(
       fullName: names['full']!,
       commonName: names['common']!,
@@ -136,6 +145,7 @@ class PlayerGenerator {
       positionRating1: positionRating1,
       positionRating2: positionRating2,
       positionRating3: positionRating3,
+      evasion: evasion,
     );
   }
 
@@ -583,5 +593,19 @@ class PlayerGenerator {
       'pick': pick,
       'info': '$draftYear Draft - Round $round, Pick $pick (#$overallPick overall)',
     };
+  }
+
+  /// Gets evasion value based on position
+  /// QB and RB positions use evasion as their attribute3, others default to 0
+  int _getEvasionForPosition(String position, int positionRating3) {
+    final pos = position.toUpperCase();
+    
+    // Only QB and RB positions have evasion as their attribute3
+    if (pos == 'QB' || pos == 'RB') {
+      return positionRating3;
+    }
+    
+    // All other positions don't use evasion
+    return 0;
   }
 }
