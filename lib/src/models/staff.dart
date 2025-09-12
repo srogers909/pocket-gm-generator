@@ -97,8 +97,8 @@ Overall Rating: $overallRating, Morale: $morale
 
 /// Head Coach staff member
 class HeadCoach extends Staff {
-  /// Affects team morale, player discipline, and clutch performance
-  final int leadership;
+  /// Ability to call the right plays in various game situations
+  final int playCalling;
   
   /// Influences clock management, timeout usage, and challenge success
   final int gameManagement;
@@ -106,8 +106,8 @@ class HeadCoach extends Staff {
   /// Boosts player experience gain and development speed
   final int playerDevelopment;
   
-  /// Determines how well the team's playbook is utilized
-  final int schemeKnowledge;
+  /// Affects team morale, player discipline, and clutch performance
+  final int motivation;
 
   HeadCoach({
     required super.fullName,
@@ -117,10 +117,10 @@ class HeadCoach extends Staff {
     required super.yearsExperience,
     required super.overallRating,
     required super.morale,
-    required this.leadership,
+    required this.playCalling,
     required this.gameManagement,
     required this.playerDevelopment,
-    required this.schemeKnowledge,
+    required this.motivation,
   });
 
   @override
@@ -137,10 +137,10 @@ class HeadCoach extends Staff {
       'yearsExperience': yearsExperience,
       'overallRating': overallRating,
       'morale': morale,
-      'leadership': leadership,
+      'playCalling': playCalling,
       'gameManagement': gameManagement,
       'playerDevelopment': playerDevelopment,
-      'schemeKnowledge': schemeKnowledge,
+      'motivation': motivation,
     };
   }
 
@@ -154,17 +154,17 @@ class HeadCoach extends Staff {
       yearsExperience: json['yearsExperience'] as int,
       overallRating: json['overallRating'] as int,
       morale: json['morale'] as int,
-      leadership: json['leadership'] as int,
+      playCalling: json['playCalling'] as int,
       gameManagement: json['gameManagement'] as int,
       playerDevelopment: json['playerDevelopment'] as int,
-      schemeKnowledge: json['schemeKnowledge'] as int,
+      motivation: json['motivation'] as int,
     );
   }
 
   @override
   String toString() {
     return '''
-${super.toString()}Attributes: Leadership($leadership) Game Management($gameManagement) Player Development($playerDevelopment) Scheme Knowledge($schemeKnowledge)
+${super.toString()}Attributes: Play Calling($playCalling) Game Management($gameManagement) Player Development($playerDevelopment) Motivation($motivation)
 ''';
   }
 }

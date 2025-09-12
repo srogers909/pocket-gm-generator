@@ -71,6 +71,9 @@ class Player {
   /// Evasion rating indicating ability to avoid sacks and pressure (0-100)
   final int evasion;
 
+  /// Pressure resistance rating for punters to handle defensive pressure (0-100)
+  final int pressureResistance;
+
   Player({
     required this.fullName,
     required this.commonName,
@@ -95,6 +98,7 @@ class Player {
     this.positionRating2 = 0,
     this.positionRating3 = 0,
     this.evasion = 0,
+    this.pressureResistance = 0,
   });
 
   /// Returns height in feet and inches format (e.g., "6'2\"")
@@ -145,6 +149,7 @@ class Player {
       'positionRating2': positionRating2,
       'positionRating3': positionRating3,
       'evasion': evasion,
+      'pressureResistance': pressureResistance,
       'heightFormatted': heightFormatted,
       'formattedPositionRatings': formattedPositionRatings,
     };
@@ -176,6 +181,7 @@ class Player {
       positionRating2: json['positionRating2'] as int,
       positionRating3: json['positionRating3'] as int,
       evasion: json['evasion'] as int,
+      pressureResistance: json['pressureResistance'] as int? ?? 0,
     );
   }
 

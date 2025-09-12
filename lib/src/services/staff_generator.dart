@@ -24,16 +24,16 @@ class StaffGenerator {
     final age = _generateAge();
     final experience = _generateExperience(age);
     
-    final leadership = _generateRating(tier: tier);
+    final playCalling = _generateRating(tier: tier);
     final gameManagement = _generateRating(tier: tier);
     final playerDevelopment = _generateRating(tier: tier);
-    final schemeKnowledge = _generateRating(tier: tier);
+    final motivation = _generateRating(tier: tier);
     
     final overallRating = _calculateOverallRating([
-      leadership,
+      playCalling,
       gameManagement,
       playerDevelopment,
-      schemeKnowledge,
+      motivation,
     ]);
 
     return HeadCoach(
@@ -44,10 +44,10 @@ class StaffGenerator {
       yearsExperience: experience,
       overallRating: overallRating,
       morale: _generateMorale(),
-      leadership: leadership,
+      playCalling: playCalling,
       gameManagement: gameManagement,
       playerDevelopment: playerDevelopment,
-      schemeKnowledge: schemeKnowledge,
+      motivation: motivation,
     );
   }
 

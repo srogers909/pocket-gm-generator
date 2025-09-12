@@ -52,6 +52,10 @@ class PlayerGenerator {
     // QB and RB use evasion as their attribute3, other positions default to 0
     final evasion = _getEvasionForPosition(position, positionRating3);
 
+    // Set pressure resistance attribute based on position
+    // Only punters (K position representing kickers/punters) use pressure resistance
+    final pressureResistance = _getPressureResistanceForPosition(position, positionRating3);
+
     return Player(
       fullName: names['full']!,
       commonName: names['common']!,
@@ -76,6 +80,7 @@ class PlayerGenerator {
       positionRating2: positionRating2,
       positionRating3: positionRating3,
       evasion: evasion,
+      pressureResistance: pressureResistance,
     );
   }
 
@@ -122,6 +127,10 @@ class PlayerGenerator {
     // QB and RB use evasion as their attribute3, other positions default to 0
     final evasion = _getEvasionForPosition(position, positionRating3);
 
+    // Set pressure resistance attribute based on position
+    // Only punters (K position representing kickers/punters) use pressure resistance
+    final pressureResistance = _getPressureResistanceForPosition(position, positionRating3);
+
     return Player(
       fullName: names['full']!,
       commonName: names['common']!,
@@ -146,6 +155,7 @@ class PlayerGenerator {
       positionRating2: positionRating2,
       positionRating3: positionRating3,
       evasion: evasion,
+      pressureResistance: pressureResistance,
     );
   }
 
@@ -606,6 +616,20 @@ class PlayerGenerator {
     }
     
     // All other positions don't use evasion
+    return 0;
+  }
+
+  /// Gets pressure resistance value based on position
+  /// Only punters (K position) use pressure resistance as their attribute3, others default to 0
+  int _getPressureResistanceForPosition(String position, int positionRating3) {
+    final pos = position.toUpperCase();
+    
+    // Only K position (representing kickers/punters) has pressure resistance as their attribute3
+    if (pos == 'K') {
+      return positionRating3;
+    }
+    
+    // All other positions don't use pressure resistance
     return 0;
   }
 }
